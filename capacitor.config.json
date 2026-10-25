@@ -1,0 +1,6 @@
+{
+  "appId": "uz.qurilish.nazorati",
+  "appName": "Qurilish nazorati",
+  "webDir": "www",
+  "android": { "allowMixedContent": false }
+}
