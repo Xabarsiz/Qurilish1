@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Qurilish nazorati</title>
+<style>
+:root{--bg:#eef1f5;--card:#fff;--ink:#14202e;--mut:#6b7788;--line:#dde3ea;--hd:#14202e;--hdink:#fff;--in:#16a34a;--out:#dc2626;--kas:#2563eb;--warn:#f5b700;--inp:#f5f7fa}
+:root[data-theme=dark]{--bg:#0d1520;--card:#17222f;--ink:#e8eef5;--mut:#8b9bb0;--line:#26364a;--hd:#091019;--inp:#0f1925}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-bottom:40px}
+header{background:var(--hd);color:var(--hdink);padding:calc(env(safe-area-inset-top,0px) + 12px) 14px 0;position:sticky;top:0;z-index:5}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.top h1{font-size:18px;margin:0}
+.th{background:#ffffff1f;border:0;color:#fff;font-size:20px;width:44px;height:44px;border-radius:12px}
+.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.tab{flex:1 0 40%;border:0;background:#ffffff14;color:#cbd5e1;padding:14px 6px;font-size:14px;font-weight:700;border-radius:14px 14px 0 0}
+.tab.on{background:var(--bg);color:var(--ink);box-shadow:inset 0 4px 0 var(--warn)}
+main{padding:14px;max-width:760px;margin:auto}
+.pane{display:none}.pane.on{display:block}
+.stats{display:grid;gap:10px;margin-bottom:14px}
+.st{border-radius:18px;padding:16px 18px;color:#fff}
+.st small{opacity:.85;font-size:14px}.st b{display:block;font-size:28px;margin-top:2px}
+.st.i{background:linear-gradient(135deg,#15803d,#22c55e)}.st.o{background:linear-gradient(135deg,#b91c1c,#f87171)}.st.k{background:linear-gradient(135deg,#1d4ed8,#60a5fa)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+h2{font-size:17px;margin:0 0 12px}
+canvas{width:100%;height:240px;display:block}
+.lg{display:flex;gap:14px;font-size:13px;color:var(--mut);margin-top:6px}.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px;font-weight:600}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--inp);border:1.5px solid var(--line);border-radius:12px;padding:14px;min-height:52px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--kas)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{width:100%;border:0;border-radius:14px;min-height:56px;font-size:16px;font-weight:700;margin-top:14px;color:#fff;background:var(--kas)}
+.btn.y{background:var(--warn);color:#1a1a1a}.btn.g{background:var(--in)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.it{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;border-left:6px solid var(--line)}
+.it.tg{border-left-color:var(--in)}.it.jr{border-left-color:var(--warn)}
+.it h3{margin:0 0 2px;font-size:16px}.it p{margin:2px 0;color:var(--mut);font-size:14px}
+.bd{display:inline-block;padding:5px 12px;border-radius:99px;font-size:13px;font-weight:700}
+.bd.tg{background:#16a34a22;color:#16a34a}.bd.jr{background:#f5b70033;color:#b78600}
+:root[data-theme=dark] .bd.jr{color:#f5b700}
+.pl{color:var(--in);font-weight:700}.mi{color:var(--out);font-weight:700}
+.del{border:0;background:#dc262620;color:var(--out);border-radius:12px;min-height:46px;padding:0 16px;font-weight:700;font-size:14px;margin-top:8px}
+.hd2{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.emp{text-align:center;color:var(--mut);padding:20px}.sub{font-size:12px;opacity:.9;margin-top:4px}textarea{resize:vertical}.it.lt{border-left-color:var(--out)}.bd.lt{background:#dc262622;color:var(--out)}.it .row{align-items:center}
+</style>
+</head>
+<body>
+<header>
+ <div class="top"><h1>🧱 Qurilish nazorati</h1><button class="th" id="th" aria-label="Mavzu">🌓</button></div>
+ <div class="tabs">
+  <button class="tab on" data-t="p1">📝 KUNLIK ISHLAR VA KASSA</button>
+  <button class="tab" data-t="p2">🏗️ OBYEKTLAR VA ETAJLAR HISOBOTI</button>
+  <button class="tab" data-t="p3">🤝 QARZLAR</button>
+ </div>
+</header>
+<main>
+<section class="pane on" id="p1">
+ <div class="box"><h2>💱 Valyuta va kurs</h2><label>Koʻrsatish valyutasi</label><select id="dc"><option>UZS</option><option>RUB</option><option>USD</option></select>
+  <div class="g2"><div><label>1 USD = ? UZS</label><input id="ru" inputmode="decimal"></div><div><label>1 RUB = ? UZS</label><input id="rr" inputmode="decimal"></div></div>
+  <p class="sub" id="ks">Kurs yuklanmoqda…</p><button class="btn y" id="kr" style="min-height:48px;margin-top:8px">🔄 Kursni hozir yangilash</button></div>
+ <div class="stats">
+  <div class="st i"><small>Jami Kirim</small><b id="sI">0</b><div class="sub" id="sIs"></div></div>
+  <div class="st o"><small>Jami Chiqim</small><b id="sO">0</b><div class="sub" id="sOs"></div></div>
+  <div class="st k"><small>Kassa</small><b id="sK">0</b><div class="sub" id="sKs"></div></div>
+ </div>
+ <div class="box"><h2 id="ct">Obyektlar boʻyicha kirim / chiqim</h2><canvas id="ch"></canvas>
+  <div class="lg"><span><i style="background:#22c55e"></i>Kirim</span><span><i style="background:#ef4444"></i>Chiqim</span></div></div>
+ <div class="box"><h2>➕ Yangi yozuv</h2>
+  <label>Sana</label><input type="date" id="fd">
+  <label>Obyekt nomi</label><input id="fn" placeholder="Masalan: Oazis majmuasi">
+  <label>Manzil</label><input id="fa">
+  <label>Etaj</label><input id="fe" placeholder="1-etaj">
+  <label>Ishlar</label><input id="fw">
+  <div class="g2"><div><label>Kirim (soʻm)</label><input id="fi" inputmode="decimal" placeholder="0"></div>
+  <div><label>Chiqim (soʻm)</label><input id="fo" inputmode="decimal" placeholder="0"></div></div>
+  <label>Valyuta</label><select id="fc"><option>UZS</option><option>RUB</option><option>USD</option></select><label>Izoh</label><input id="fz">
+  <button class="btn g" id="add1">Yozuvni saqlash</button></div>
+ <div class="box"><h2>📅 Filtr va Excel (CSV)</h2>
+  <div class="g2"><div><label>Dan</label><input type="date" id="df"></div><div><label>Gacha</label><input type="date" id="dt"></div></div>
+  <div class="row"><button class="btn y" id="clr">Filtrni tozalash</button><button class="btn" id="csv">⬇ CSV yuklash</button></div></div>
+ <div class="box"><h2>⬆ Jadvalni import (CSV)</h2><input type="file" id="f1" accept=".csv,.txt,text/csv,text/plain">
+  <label>yoki jadval matnini shu yerga qoʻying</label><textarea id="t1" rows="4" placeholder="Sana;Obyekt;Manzil;Etaj;Ishlar;Kirim;Chiqim;Valyuta;Izoh"></textarea>
+  <button class="btn" id="i1">Matndan import qilish</button></div>
+ <h2>Yozuvlar</h2><div id="l1"></div>
+</section>
+
+<section class="pane" id="p2">
+ <div class="box"><h2>➕ Yangi obyekt / etaj</h2>
+  <label>Obyekt nomi</label><input id="on">
+  <label>Manzil</label><input id="oa">
+  <label>Etaj</label><input id="oe" placeholder="1-etaj">
+  <div class="g2"><div><label>Ish boshlangan sana</label><input type="date" id="os"></div><div><label>Etaj koʻtarilgan sana</label><input type="date" id="ok"></div></div>
+  <div class="g2"><div><label>Pul olingan sana</label><input type="date" id="op"></div><div><label>Jami olingan pul</label><input id="om" inputmode="decimal" placeholder="0"></div></div>
+  <label>Valyuta</label><select id="oc"><option>UZS</option><option>RUB</option><option>USD</option></select><label>Ishning holati</label><select id="oh"><option>Jarayonda</option><option>Tugallandi</option></select>
+  <button class="btn g" id="add2">Obyektni saqlash</button></div>
+ <div class="box"><h2>⬆ Jadvalni import (CSV)</h2><input type="file" id="f2" accept=".csv,.txt,text/csv,text/plain">
+  <label>yoki jadval matnini shu yerga qoʻying</label><textarea id="t2" rows="4" placeholder="Obyekt;Manzil;Etaj;Boshlandi;Koʻtarildi;Pul olindi;Jami Pul;Valyuta;Holati"></textarea>
+  <button class="btn" id="i2">Matndan import qilish</button><button class="btn y" id="x2">⬇ CSV yuklash</button></div>
+ <h2>Obyektlar</h2><div id="l2"></div>
+</section>
+<section class="pane" id="p3">
+ <div class="stats">
+  <div class="st i"><small>Menga qaytariladi (berganim)</small><b id="qI">0</b><div class="sub" id="qIs"></div></div>
+  <div class="st o"><small>Men qaytaraman (olganim)</small><b id="qO">0</b><div class="sub" id="qOs"></div></div>
+  <div class="st k"><small>Sof qarz balansi</small><b id="qK">0</b><div class="sub" id="qKs"></div></div>
+ </div>
+ <div class="box"><h2>➕ Yangi qarz</h2>
+  <label>Turi</label><select id="qt"><option value="berdim">Qarz berdim</option><option value="oldim">Qarz oldim</option></select>
+  <label>Kim bilan (ism)</label><input id="qn">
+  <div class="g2"><div><label>Summa</label><input id="qs" inputmode="decimal" placeholder="0"></div><div><label>Valyuta</label><select id="qv"><option>UZS</option><option>RUB</option><option>USD</option></select></div></div>
+  <div class="g2"><div><label>Sana</label><input type="date" id="qd"></div><div><label>Qaytarish muddati</label><input type="date" id="qm"></div></div>
+  <label>Izoh</label><input id="qz">
+  <button class="btn g" id="add3">Qarzni saqlash</button></div>
+ <div class="box"><h2>⬆ Jadvalni import (CSV)</h2><input type="file" id="f3" accept=".csv,.txt,text/csv,text/plain">
+  <label>yoki jadval matnini shu yerga qoʻying</label><textarea id="t3" rows="4" placeholder="Kim;Tur;Summa;Qaytarilgan;Valyuta;Sana;Muddat;Izoh"></textarea>
+  <button class="btn" id="i3">Matndan import qilish</button><button class="btn y" id="x3">⬇ CSV yuklash</button></div>
+ <h2>Qarzlar</h2><div id="l3"></div>
+</section>
+</main>
+<script>
+const $=s=>document.getElementById(s);
+const K1='qd_kassa_v1',K2='qd_obyekt_v1',KT='qd_theme';
+const D1=[
+["2026-10-01","Oazis Turar-joy Majmuasi","Toshkent sh., Yunusobod t.","1-etaj","Gʻisht terish va qolip tayyorlash",5000000,1200000,"Avans berildi"],
+["2026-10-02","Oazis Turar-joy Majmuasi","Toshkent sh., Yunusobod t.","1-etaj","Beton quyish ishlari",0,450000,"Sement va sim sotib olindi"],
+["2026-10-03","Zamin Biznes Markazi","Toshkent sh., Chilonzor t.","3-etaj","Suvoqchilik va montaj",8000000,2000000,"Etaj topshirilgani uchun toʻlov"],
+["2026-10-05","Oazis Turar-joy Majmuasi","Toshkent sh., Yunusobod t.","2-etaj","2-etaj karkasini koʻtarish",0,800000,"Ishchilar tushligi va transport"]
+].map((a,i)=>({id:i+1,sana:a[0],nom:a[1],manzil:a[2],etaj:a[3],ish:a[4],kirim:a[5],chiqim:a[6],izoh:a[7]}));
+const D2=[
+["Oazis Turar-joy Majmuasi","Toshkent sh., Yunusobod t.","1-etaj","2026-10-01","2026-10-04","2026-10-01",5000000,"Tugallandi"],
+["Oazis Turar-joy Majmuasi","Toshkent sh., Yunusobod t.","2-etaj","2026-10-05","Jarayonda","-",0,"Jarayonda"],
+["Zamin Biznes Markazi","Toshkent sh., Chilonzor t.","3-etaj","2026-10-03","2026-10-10","2026-10-03",8000000,"Tugallandi"]
+].map((a,i)=>({id:i+1,nom:a[0],manzil:a[1],etaj:a[2],boshlandi:a[3],kotarildi:a[4],pul_sana:a[5],pul:a[6],holat:a[7]}));
+function load(k,d){try{const v=localStorage.getItem(k);if(v)return JSON.parse(v)}catch(e){}return d.slice()}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let A=load(K1,D1),B=load(K2,D2);const K3='qd_qarz_v1';let C=load(K3,[]);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>Number(n||0).toLocaleString('ru-RU',{maximumFractionDigits:2}).replace(/[\u00a0\u202f]/g,' ');
+const num=v=>parseFloat(String(v||'').replace(/\s/g,'').replace(',','.'))||0;
+const KR='qd_kurs_v1';let R={usd:12000,rub:150,show:'UZS'};try{Object.assign(R,JSON.parse(localStorage.getItem(KR)))}catch(e){}
+const RT=()=>({UZS:1,USD:R.usd,RUB:R.rub});
+const conv=(v,c)=>v*RT()[c||'UZS']/RT()[R.show];
+const money=(n,c)=>{c=c||'UZS';if(c==='UZS')n=Math.round(n);return c==='USD'?'$'+fmt(n):fmt(n)+' '+(c==='RUB'?'₽':'soʻm')};
+const today=()=>new Date().toISOString().slice(0,10);
+
+// Mavzu
+function theme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem(KT,t)}catch(e){}draw()}
+$('th').onclick=()=>theme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+let t0='dark';try{t0=localStorage.getItem(KT)||'dark'}catch(e){}
+document.documentElement.dataset.theme=t0;
+
+// Tablar
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x===b));
+ document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id===b.dataset.t));
+ scrollTo(0,0);draw();
+});
+
+// Raqam maydonlari: faqat raqam
+['fi','fo','om','ru','rr','qs'].forEach(id=>$(id).addEventListener('input',e=>{
+ const p=e.target.value.replace(',','.').replace(/[^\d.]/g,'').split('.');
+ const i=p[0]?fmt(p[0]):'';e.target.value=p.length>1?i+'.'+p.slice(1).join('').slice(0,2):i}));
+
+function filtered(){const f=$('df').value,t=$('dt').value;
+ return A.filter(r=>(!f||r.sana>=f)&&(!t||r.sana<=t)).sort((a,b)=>b.sana.localeCompare(a.sana)||b.id-a.id)}
+
+function render1(){
+ const L=filtered();let I=0,O=0;const S={};
+ L.forEach(r=>{const c=r.val||'UZS';S[c]=S[c]||{i:0,o:0};S[c].i+=r.kirim;S[c].o+=r.chiqim;I+=conv(r.kirim,c);O+=conv(r.chiqim,c)});
+ const ks=Object.keys(S),sub=f=>ks.length>1?ks.filter(c=>f(S[c])).map(c=>money(f(S[c]),c)).join(' · '):'';
+ $('sI').textContent=money(I,R.show);$('sO').textContent=money(O,R.show);$('sK').textContent=money(I-O,R.show);
+ $('sIs').textContent=sub(x=>x.i);$('sOs').textContent=sub(x=>x.o);$('sKs').textContent=sub(x=>x.i-x.o);
+ $('ct').textContent="Obyektlar boʻyicha kirim / chiqim ("+R.show+")";
+ $('l1').innerHTML=L.length?L.map(r=>`<div class="it"><div class="hd2"><div><h3>${esc(r.nom)}</h3><p>${esc(r.sana)} · ${esc(r.etaj)}</p></div></div>
+ <p>📍 ${esc(r.manzil)}</p><p>🔨 ${esc(r.ish)}</p>
+ <p><span class="pl">+ ${money(r.kirim,r.val)}</span> &nbsp; <span class="mi">− ${money(r.chiqim,r.val)}</span></p>
+ ${r.izoh?`<p>💬 ${esc(r.izoh)}</p>`:''}<button class="del" data-d1="${r.id}">🗑 Oʻchirish</button></div>`).join(''):'<div class="emp">Bu davrda yozuv yoʻq. Yuqoridagi forma orqali qoʻshing.</div>';
+ draw();
+}
+
+// Bar chart (offlayn, tashqi kutubxonasiz)
+function draw(){
+ const cv=$('ch');if(!cv||!cv.offsetWidth)return;
+ const dpr=window.devicePixelRatio||1,W=cv.offsetWidth,H=cv.offsetHeight;
+ cv.width=W*dpr;cv.height=H*dpr;const c=cv.getContext('2d');c.scale(dpr,dpr);
+ const M={};filtered().forEach(r=>{(M[r.nom]=M[r.nom]||{i:0,o:0});M[r.nom].i+=conv(r.kirim,r.val);M[r.nom].o+=conv(r.chiqim,r.val)});
+ const ks=Object.keys(M),cs=getComputedStyle(document.documentElement),mut=cs.getPropertyValue('--mut'),ln=cs.getPropertyValue('--line');
+ c.font='12px system-ui';c.textAlign='center';
+ if(!ks.length){c.fillStyle=mut;c.fillText("Maʼlumot yoʻq",W/2,H/2);return}
+ const mx=Math.max(1,...ks.map(k=>Math.max(M[k].i,M[k].o))),pl=48,pb=46,pt=14,ph=H-pb-pt,pw=W-pl-6;
+ for(let g=0;g<=4;g++){const y=pt+ph-ph*g/4;c.strokeStyle=ln;c.beginPath();c.moveTo(pl,y);c.lineTo(W-6,y);c.stroke();
+  c.fillStyle=mut;c.textAlign='right';const v=mx*g/4;c.fillText(v>=1e6?(v/1e6).toFixed(1)+' mln':v>=1e3?Math.round(v/1e3)+' ming':Math.round(v),pl-6,y+4)}
+ const sl=pw/ks.length,bw=Math.min(34,sl/2.6);c.textAlign='center';
+ ks.forEach((k,j)=>{const x=pl+sl*j+sl/2;
+  [[M[k].i,'#22c55e',-bw],[M[k].o,'#ef4444',0]].forEach(([v,col,o])=>{const h=ph*v/mx;
+   c.fillStyle=col;c.beginPath();c.roundRect?c.roundRect(x+o,pt+ph-h,bw-2,h,[6,6,0,0]):c.rect(x+o,pt+ph-h,bw-2,h);c.fill()});
+  c.fillStyle=cs.getPropertyValue('--ink');const nm=k.length>12?k.slice(0,11)+'…':k;c.fillText(nm,x,H-pb+18)});
+}
+addEventListener('resize',draw);
+
+$('add1').onclick=()=>{
+ const nom=$('fn').value.trim();if(!nom){alert("Obyekt nomini kiriting");$('fn').focus();return}
+ A.push({id:Date.now(),sana:$('fd').value||today(),nom,manzil:$('fa').value.trim(),etaj:$('fe').value.trim(),ish:$('fw').value.trim(),kirim:num($('fi').value),chiqim:num($('fo').value),val:$('fc').value,izoh:$('fz').value.trim()});
+ save(K1,A);['fn','fa','fe','fw','fi','fo','fz'].forEach(i=>$(i).value='');render1();
+};
+$('l1').onclick=e=>{const id=e.target.dataset.d1;if(id&&confirm("Yozuv oʻchirilsinmi?")){A=A.filter(r=>r.id!=id);save(K1,A);render1()}};
+$('df').onchange=$('dt').onchange=render1;
+$('clr').onclick=()=>{$('df').value=$('dt').value='';render1()};
+$('csv').onclick=()=>{
+ const L=filtered().sort((a,b)=>a.sana.localeCompare(b.sana));
+ if(!L.length){alert("Tanlangan davrda maʼlumot yoʻq");return}
+ const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+ let s="Sana;Obyekt;Manzil;Etaj;Ishlar;Kirim;Chiqim;Valyuta;Izoh\r\n";const T={};
+ L.forEach(r=>{const v=r.val||'UZS';T[v]=T[v]||[0,0];T[v][0]+=r.kirim;T[v][1]+=r.chiqim;s+=[r.sana,r.nom,r.manzil,r.etaj,r.ish,r.kirim,r.chiqim,v,r.izoh].map(q).join(';')+"\r\n"});
+ Object.keys(T).forEach(v=>{s+=['JAMI','','','','',T[v][0],T[v][1],v,'Kassa: '+(T[v][0]-T[v][1])].map(q).join(';')+"\r\n"});
+ const f=$('df').value||L[0].sana,t=$('dt').value||L[L.length-1].sana;
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+s],{type:'text/csv;charset=utf-8'}));
+ a.download=`hisobot_${f}_${t}.csv`;document.body.appendChild(a);a.click();a.remove();
+};
+
+function render2(){
+ const L=B.slice().sort((a,b)=>b.id-a.id);
+ $('l2').innerHTML=L.length?L.map(r=>{const tg=r.holat==='Tugallandi',c=tg?'tg':'jr';
+ return `<div class="it ${c}"><div class="hd2"><div><h3>${esc(r.nom)}</h3><p>${esc(r.etaj)}</p></div><span class="bd ${c}">${tg?'🟢 Tugallandi':'🟡 Jarayonda'}</span></div>
+ <p>📍 ${esc(r.manzil)}</p><p>▶ Boshlandi: <b>${esc(r.boshlandi||'-')}</b></p><p>🏢 Koʻtarildi: <b>${esc(r.kotarildi||'-')}</b></p>
+ <p>💰 Pul olindi: <b>${esc(r.pul_sana||'-')}</b></p><p>Jami pul: <span class="pl">${money(r.pul,r.val)}</span></p>
+ <button class="del" data-d2="${r.id}">🗑 Oʻchirish</button></div>`}).join(''):'<div class="emp">Obyekt yoʻq. Yuqoridagi forma orqali qoʻshing.</div>';
+}
+$('add2').onclick=()=>{
+ const nom=$('on').value.trim();if(!nom){alert("Obyekt nomini kiriting");$('on').focus();return}
+ const h=$('oh').value;
+ B.push({id:Date.now(),nom,manzil:$('oa').value.trim(),etaj:$('oe').value.trim(),boshlandi:$('os').value||'-',
+  kotarildi:$('ok').value||'Jarayonda',pul_sana:$('op').value||'-',pul:num($('om').value),val:$('oc').value,holat:h});
+ save(K2,B);['on','oa','oe','os','ok','op','om'].forEach(i=>$(i).value='');$('oh').value='Jarayonda';render2();
+};
+$('l2').onclick=e=>{const id=e.target.dataset.d2;if(id&&confirm("Obyekt oʻchirilsinmi?")){B=B.filter(r=>r.id!=id);save(K2,B);render2()}};
+
+function parseCSV(t){
+ t=t.replace(/^\ufeff/,'');const f=t.split(/\r?\n/)[0]||'';
+ const d=[';','\t',','].map(x=>[x,f.split(x).length]).sort((a,b)=>b[1]-a[1])[0][0];
+ const rows=[];let r=[],c='',q=false;
+ for(let i=0;i<t.length;i++){const ch=t[i];
+  if(q){if(ch=='"'){if(t[i+1]=='"'){c+='"';i++}else q=false}else c+=ch}
+  else if(ch=='"')q=true;
+  else if(ch==d){r.push(c);c=''}
+  else if(ch=='\n'||ch=='\r'){if(ch=='\r'&&t[i+1]=='\n')i++;r.push(c);c='';if(r.some(x=>x.trim()))rows.push(r);r=[]}
+  else c+=ch}
+ r.push(c);if(r.some(x=>x.trim()))rows.push(r);return rows}
+const nd=s=>{s=String(s||'').trim();let m=s.match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})/);if(m)return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');m=s.match(/^(\d{1,2})[-./](\d{1,2})[-./](\d{4})/);return m?m[3]+'-'+m[2].padStart(2,'0')+'-'+m[1].padStart(2,'0'):''};
+const nc=s=>{s=String(s||'').toUpperCase();return /RUB|RUBL|₽|РУБ/.test(s)?'RUB':/USD|\$|DOLL/.test(s)?'USD':'UZS'};
+function done(a,k){alert(a+" ta yozuv import qilindi"+(k?", "+k+" tasi oʻtkazib yuborildi (boʻsh yoki takror)":""))}
+function imp1(rows){
+ let h=null;if(rows.length&&/sana|obyekt/i.test(rows[0].slice(0,2).join(' ')))h=rows.shift().map(x=>x.trim().toLowerCase());
+ const ix=(k,d)=>h?h.findIndex(x=>x.startsWith(k)):d;
+ const c={s:ix('sana',0),n:ix('obyekt',1),m:ix('manzil',2),e:ix('etaj',3),w:ix('ish',4),i:ix('kirim',5),o:ix('chiqim',6),v:ix('valyuta',7),z:ix('izoh',8)};
+ if(!h&&rows[0]&&rows[0].length<9){c.v=-1;c.z=7}
+ const g=(r,k)=>c[k]<0?'':String(r[c[k]]||'').trim();let add=0,skip=0;
+ rows.forEach((r,j)=>{const nom=g(r,'n');if(!nom){skip++;return}
+  const x={id:Date.now()+j,sana:nd(g(r,'s'))||today(),nom,manzil:g(r,'m'),etaj:g(r,'e'),ish:g(r,'w'),kirim:num(g(r,'i')),chiqim:num(g(r,'o')),val:nc(g(r,'v')),izoh:g(r,'z')};
+  if(A.some(a=>a.sana==x.sana&&a.nom==x.nom&&a.etaj==x.etaj&&a.ish==x.ish&&a.kirim==x.kirim&&a.chiqim==x.chiqim&&(a.val||'UZS')==x.val)){skip++;return}
+  A.push(x);add++});
+ save(K1,A);render1();done(add,skip)}
+function imp2(rows){
+ if(rows.length&&/obyekt/i.test(rows[0][0]))rows.shift();
+ const L9=rows[0]&&rows[0].length>=9;let add=0,skip=0;
+ rows.forEach((r,j)=>{const t=i=>String(r[i]||'').trim(),nom=t(0);if(!nom){skip++;return}
+  const x={id:Date.now()+j,nom,manzil:t(1),etaj:t(2),boshlandi:nd(t(3))||t(3)||'-',kotarildi:nd(t(4))||t(4)||'Jarayonda',pul_sana:nd(t(5))||t(5)||'-',pul:num(t(6)),val:L9?nc(t(7)):'UZS',holat:/tug/i.test(t(L9?8:7))?'Tugallandi':'Jarayonda'};
+  if(B.some(b=>b.nom==x.nom&&b.etaj==x.etaj&&b.boshlandi==x.boshlandi&&b.pul==x.pul)){skip++;return}
+  B.push(x);add++});
+ save(K2,B);render2();done(add,skip)}
+function pick(fid,tid,bid,fn){
+ const run=t=>{const rows=parseCSV(t);if(!rows.length){alert("Jadval boʻsh yoki oʻqib boʻlmadi");return}fn(rows)};
+ $(fid).onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{run(fr.result);e.target.value=''};fr.readAsText(f,'UTF-8')};
+ $(bid).onclick=()=>{const v=$(tid).value;if(!v.trim()){alert("Avval jadval matnini qoʻying");return}run(v);$(tid).value=''}}
+pick('f1','t1','i1',imp1);pick('f2','t2','i2',imp2);
+const qq=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+$('x2').onclick=()=>{if(!B.length){alert("Obyekt yoʻq");return}
+ let s="Obyekt;Manzil;Etaj;Boshlandi;Koʻtarildi;Pul olindi;Jami Pul;Valyuta;Holati\r\n";
+ B.forEach(r=>{s+=[r.nom,r.manzil,r.etaj,r.boshlandi,r.kotarildi,r.pul_sana,r.pul,r.val||'UZS',r.holat].map(qq).join(';')+"\r\n"});
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+s],{type:'text/csv;charset=utf-8'}));a.download='obyektlar.csv';document.body.appendChild(a);a.click();a.remove()};
+const sv=()=>{try{localStorage.setItem(KR,JSON.stringify(R))}catch(e){}};
+const ld=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const ldf=d=>d?d.split('-').reverse().join('.'):'';
+function setInputs(){$('dc').value=R.show;$('ru').value=fmt(R.usd);$('rr').value=fmt(R.rub)}
+function status(m){$('ks').textContent=m}
+function showStatus(){status(R.sana?`Kurs sanasi: ${ldf(R.sana)} · manba: ${R.src||'—'}. Kuniga 1 marta avtomatik belgilanadi va kun boʻyi shu kurs amal qiladi.`:"Kurs hali yangilanmagan. Internet boʻlsa avtomatik belgilanadi.")}
+async function getJSON(u){const c=new AbortController(),t=setTimeout(()=>c.abort(),12000);try{const r=await fetch(u,{signal:c.signal,cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);return await r.json()}finally{clearTimeout(t)}}
+const SRC=[
+ ['Markaziy bank','https://cbu.uz/oz/arkhiv-kursov-valyut/json/',j=>{const g=c=>{const x=j.find(y=>y.Ccy===c);return x?parseFloat(x.Rate)/(parseFloat(x.Nominal)||1):0};return[g('USD'),g('RUB')]}],
+ ['open.er-api.com','https://open.er-api.com/v6/latest/USD',j=>[j.rates.UZS,j.rates.UZS/j.rates.RUB]],
+ ['currency-api (jsDelivr)','https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',j=>[j.usd.uzs,j.usd.uzs/j.usd.rub]],
+ ['currency-api (pages)','https://latest.currency-api.pages.dev/v1/currencies/usd.json',j=>[j.usd.uzs,j.usd.uzs/j.usd.rub]]
+];
+let lastErr='';
+async function fetchRates(){
+ const er=[];
+ for(const [nm,u,f] of SRC){
+  try{const [a,b]=f(await getJSON(u));if(a>1000&&b>1)return{usd:a,rub:b,src:nm}; er.push(nm+': notoʻgʻri javob')}
+  catch(e){er.push(nm+': '+(e.name==='AbortError'?'vaqt tugadi':e.message||'xato'))}}
+ lastErr=er.join(' | ');return null}
+let busy=false,lastTry=0;
+async function dailyRate(force){
+ if(busy)return;
+ if(!force&&R.sana===ld())return;          // bugun kurs allaqachon belgilangan
+ if(!force&&Date.now()-lastTry<600000)return; // xato boʻlsa 10 daqiqada bir qayta urinadi
+ busy=true;lastTry=Date.now();status('⏳ Kurs yuklanmoqda…');
+ const x=await fetchRates();busy=false;
+ if(x){R.usd=x.usd;R.rub=x.rub;R.sana=ld();R.src=x.src;sv();setInputs();render1();render3();showStatus()}
+ else status((R.sana?`⚠ Yangi kursni yuklab boʻlmadi, oxirgi kurs (${ldf(R.sana)}) ishlatilmoqda. `:"⚠ Kursni yuklab boʻlmadi, qoʻlda kiriting. ")+"Sabab: "+lastErr)}
+setInputs();showStatus();
+$('dc').onchange=e=>{R.show=e.target.value;sv();render1();render3()};
+// Qoʻlda kiritilsa, shu kun uchun oʻsha kurs saqlanadi
+const manual=()=>{R.sana=ld();R.src='qoʻlda kiritilgan';sv();render1();render3();showStatus()};
+$('ru').addEventListener('input',e=>{R.usd=num(e.target.value)||R.usd;manual()});
+$('rr').addEventListener('input',e=>{R.rub=num(e.target.value)||R.rub;manual()});
+$('kr').onclick=()=>dailyRate(true);
+addEventListener('online',()=>dailyRate());
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)dailyRate()});
+setInterval(()=>dailyRate(),60000); // yarim tundan keyin yangi kun boshlansa ham ishlaydi
+dailyRate();
+
+const rest=r=>Math.max(r.summa-(r.tolangan||0),0);
+function render3(){
+ let P=0,Q=0;const SP={},SQ={};
+ C.forEach(r=>{const c=r.val||'UZS',m=rest(r);if(r.tur==='berdim'){P+=conv(m,c);SP[c]=(SP[c]||0)+m}else{Q+=conv(m,c);SQ[c]=(SQ[c]||0)+m}});
+ const sb=S=>{const k=Object.keys(S).filter(c=>S[c]>0);return k.length>1?k.map(c=>money(S[c],c)).join(' · '):''};
+ $('qI').textContent=money(P,R.show);$('qO').textContent=money(Q,R.show);$('qK').textContent=(P>=Q?'+':'−')+money(Math.abs(P-Q),R.show);
+ $('qIs').textContent=sb(SP);$('qOs').textContent=sb(SQ);$('qKs').textContent=P>=Q?"Sizga koʻproq qaytarilishi kerak":"Siz koʻproq qaytarishingiz kerak";
+ const t=today(),L=C.slice().sort((a,b)=>(rest(a)==0)-(rest(b)==0)||b.sana.localeCompare(a.sana)||b.id-a.id);
+ $('l3').innerHTML=L.length?L.map(r=>{const m=rest(r),cl=m==0,late=!cl&&r.muddat&&r.muddat<t,v=r.val||'UZS',k=cl?'tg':late?'lt':'jr',bt=cl?'🟢 Yopilgan':late?'🔴 Muddati oʻtgan':'🟡 Ochiq',be=r.tur==='berdim';
+ return `<div class="it ${k}"><div class="hd2"><div><h3>${esc(r.kim)}</h3><p>${be?'⬆ Qarz berdim':'⬇ Qarz oldim'} · ${esc(r.sana)}</p></div><span class="bd ${k}">${bt}</span></div>
+ <p>Summa: <b>${money(r.summa,v)}</b></p><p>Qaytarilgan: <b>${money(r.tolangan||0,v)}</b></p>
+ <p>Qoldi: <span class="${be?'pl':'mi'}">${money(m,v)}</span></p>
+ ${r.muddat?`<p>⏰ Muddat: ${esc(r.muddat)}</p>`:''}${r.izoh?`<p>💬 ${esc(r.izoh)}</p>`:''}
+ ${cl?'':`<div class="row" style="margin-top:8px"><input inputmode="decimal" id="pi${r.id}" placeholder="Qaytarilgan summa"><button class="del" style="background:#16a34a22;color:var(--in);margin:0" data-p3="${r.id}">💵 Qoʻshish</button></div>`}
+ <div class="row">${cl?'':`<button class="del" data-y3="${r.id}">✔ Toʻliq yopish</button>`}<button class="del" data-d3="${r.id}">🗑 Oʻchirish</button></div></div>`}).join(''):'<div class="emp">Qarz yoʻq. Yuqoridagi forma orqali qoʻshing.</div>';
+}
+$('add3').onclick=()=>{const kim=$('qn').value.trim(),n=num($('qs').value);
+ if(!kim){alert("Ismni kiriting");$('qn').focus();return}if(n<=0){alert("Summani kiriting");$('qs').focus();return}
+ C.push({id:Date.now(),tur:$('qt').value,kim,summa:n,tolangan:0,val:$('qv').value,sana:$('qd').value||today(),muddat:$('qm').value,izoh:$('qz').value.trim()});
+ save(K3,C);['qn','qs','qm','qz'].forEach(i=>$(i).value='');render3()};
+$('l3').onclick=e=>{const d=e.target.dataset,id=d.p3||d.y3||d.d3;if(!id)return;const r=C.find(x=>x.id==id);if(!r)return;
+ if(d.p3){const a=num($('pi'+id).value);if(a<=0){alert("Summani kiriting");return}r.tolangan=Math.min(r.summa,(r.tolangan||0)+a)}
+ else if(d.y3)r.tolangan=r.summa;
+ else{if(!confirm("Qarz oʻchirilsinmi?"))return;C=C.filter(x=>x.id!=id)}
+ save(K3,C);render3()};
+function imp3(rows){
+ if(rows.length&&/^kim$/i.test(rows[0][0].trim()))rows.shift();let add=0,skip=0;
+ rows.forEach((r,j)=>{const t=i=>String(r[i]||'').trim(),kim=t(0),n=num(t(2));if(!kim||n<=0){skip++;return}
+  const x={id:Date.now()+j,kim,tur:/ber/i.test(t(1))?'berdim':'oldim',summa:n,tolangan:Math.min(n,num(t(3))),val:nc(t(4)),sana:nd(t(5))||today(),muddat:nd(t(6)),izoh:t(7)};
+  if(C.some(c=>c.kim==x.kim&&c.tur==x.tur&&c.summa==x.summa&&c.sana==x.sana&&(c.val||'UZS')==x.val)){skip++;return}
+  C.push(x);add++});
+ save(K3,C);render3();done(add,skip)}
+pick('f3','t3','i3',imp3);
+$('x3').onclick=()=>{if(!C.length){alert("Qarz yoʻq");return}
+ let s="Kim;Tur;Summa;Qaytarilgan;Valyuta;Sana;Muddat;Izoh\r\n";
+ C.forEach(r=>{s+=[r.kim,r.tur==='berdim'?'Berdim':'Oldim',r.summa,r.tolangan||0,r.val||'UZS',r.sana,r.muddat||'',r.izoh||''].map(qq).join(';')+"\r\n"});
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+s],{type:'text/csv;charset=utf-8'}));a.download='qarzlar.csv';document.body.appendChild(a);a.click();a.remove()};
+$('qd').value=today();
+
+$('fd').value=today();
+render1();render2();render3();
+</script>
+</body>
+</html>
